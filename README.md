@@ -15,7 +15,7 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image_undist]: ./img/writeup/calibration_checkerboard.jpg "Undistorted checkerboard"
-[image_car_undist]: .img/writeup/calibration_car.jpg "Undistorted car capture image"
+[image_car_undist]: ./img/writeup/calibration_car.jpg "Undistorted car capture image"
 
 [image3]: ./examples/binary_combo_example.jpg "Binary Example"
 [image4]: ./examples/warped_straight_lines.jpg "Warp Example"
