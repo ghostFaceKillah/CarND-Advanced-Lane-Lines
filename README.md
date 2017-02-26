@@ -19,9 +19,10 @@ The goals / steps of this project are the following:
 [image_thresh]: ./img/writeup/thresholding.jpg "Thresholding pipeline"
 [image_perspective]: ./img/writeup/warping.jpg "Perspective warping"
 [image_hist]: ./img/writeup/hist.jpg "Histogram of lower part of binary mask"
-
 [image_lane_finding]: ./img/writeup/lane_finding.jpg "Visualization of the lane line finding algorthitm"
 [image_full]: ./img/writeup/full_output.jpg "Full pipeline effect"
+[image_dist_from_center]: ./img/writeup/dist_from_center.jpg "Implied distance of car from center"
+[image_curvature]: ./img/writeup/curvatures.jpg "Implied curvature"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -130,15 +131,37 @@ in the observed image. Therefore I expotentially smooth my detections over time.
 is implemented in file `process_video.py` in lines 20-23.
 
 
-####5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
+####5. Describe how (and identify where in your code) you calculated the radius
+of curvature of the lane and the position of the vehicle with respect to
+center.
 
-TODO
+I have prepared module `curvature.py` with functions that calculate the radius
+of curvature of the lane lines and position.
+
+The calculations are implementation of
+ [this tutorial](http://www.intmath.com/applications-differentiation/8-radius-curvature.php).
+They are pretty easy - the only tricky thing to do is to transform the units from
+the pixels to meters well. We can do it based on official US highway specifications.
+
+History of the radius of the curve can be seen below
+![alt text][image_curvature]
+The curvature seems to be bounded by 500 m, which is more or less in line with the
+[official US highway design manuals](http://onlinemanuals.txdot.gov/txdotmanuals/rdw/Table_2-3_m.pdf).
+
+
+History of the distance of car from the center is seen below.
+![alt text][image_dist_from_center]
+As the lane is approximately 3.7 m wide, we see a result that the car is
+staying mostly on the left side of the lane, which is in line with what we see
+in the video.
+
 
 ####6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
 I have prepared a function that based on the final left and right lane-line fit 
 draws the lane on the (undistorted) input image. This function can be seen in file
 `finding_lines.py` in lines 228 - 252.
+
 
 ![alt text][image_full]
 
@@ -156,7 +179,37 @@ Here's a [link to my video result](./out/project_out.mp4)
 
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked
-and why, where the pipeline might fail and how I might improve it if I were
-going to pursue this project further.  
+Feature engineering for computer vision is hard!  This is well known to anybody
+who was interested in computer vision in the pre-NN-revival era (pre-2012).
+Making features that work in many different visual conditions was the main
+challange of the project.  Even though task was made relatively easy for us -
+the videos are pretty consistent, taken during daytime with pretty bright and
+consistent lighting it still was somewhat tricky to come up with features that
+will work always with required level of precision.  Additionally, the features
+have non-trivial interactions. It is clear that by combining many features we
+get fuller information, but a priori it is not clear how to combine them.
+Especially that there is not ground truth (we have no dataset with
+well-annotated lane-lines).  Thus, a pretty extensive search of the parameter
+space was required to come up with something that works OK.
+
+
+There are many, many ways in which the pipeline might fail:
+  - snow on the road
+  - driving in the night
+  - bumpy road, obscuring parts of lanes and breaking perspective transform
+  - time-worn bleak lane lines
+
+
+These are all consequences of the fact that the predictor framework depends on 
+many features that are tuned to the current lighting conditions and relatively
+straight lines.
+
+If I were to recommend where to go from here, I would to the following:
+  - implement a number of (10-20 more?) relatively uncorrelated feature 
+    and combined features variations
+  - based on the above features implement new lane annotators, working on
+    on a dataset with different lighting conditions (night?, rainy day?)
+  - figure out a way to treat it more like a machine learning problem, perhaps
+    by manually or semi-manually annotating the lane lines. Maybe manually 
+    veryfying the accuracy of the annotation?
 

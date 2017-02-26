@@ -63,8 +63,8 @@ def writeup_show_warping():
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = undst_f(img)
 
-    w=1280 
-    h=720
+    w = 1280 
+    h = 720
     bottom_w = w
     top_w = 249 
     bottom_h = h - 20
