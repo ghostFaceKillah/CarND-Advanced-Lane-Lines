@@ -17,8 +17,8 @@ The goals / steps of this project are the following:
 [image_undist]: ./img/writeup/calibration_checkerboard.jpg "Undistorted checkerboard"
 [image_car_undist]: ./img/writeup/calibration_car.jpg "Undistorted car capture image"
 [image_thresh]: ./img/writeup/thresholding.jpg "Thresholding pipeline"
+[image_perspective]: ./img/writeup/warping.jpg "Perspective warping"
 
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
 [image5]: ./examples/color_fit_lines.jpg "Fit Visual"
 [image6]: ./examples/example_output.jpg "Output"
 [video1]: ./project_video.mp4 "Video"
@@ -100,9 +100,11 @@ following points in a 1280x720 image:
 | 764, 472      | 1180, 10      |
 | 1280, 700     | 1180, 710     |
 
-I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
-
-![alt text][image4]
+I verified that my perspective transform was working as expected by drawing the
+`src` and `dst` points onto a test image and its warped counterpart to verify
+that the lines appear parallel in the warped image. This can be seen in the
+below image.
+![alt text][image_perspective]
 
 ####4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
