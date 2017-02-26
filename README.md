@@ -16,8 +16,8 @@ The goals / steps of this project are the following:
 
 [image_undist]: ./img/writeup/calibration_checkerboard.jpg "Undistorted checkerboard"
 [image_car_undist]: ./img/writeup/calibration_car.jpg "Undistorted car capture image"
+[image_thresh]: ./img/writeup/thresholding.jpg "Thresholding pipeline"
 
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
 [image4]: ./examples/warped_straight_lines.jpg "Warp Example"
 [image5]: ./examples/color_fit_lines.jpg "Fit Visual"
 [image6]: ./examples/example_output.jpg "Output"
@@ -70,12 +70,17 @@ Applying the above described undistortion produced by `undistort_factory` from
 
 ####2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-I used a combination of color and gradient thresholds to generate a binary
-image (thresholding steps at lines # through # in `another_file.py`).  Here's
-an example of my output for this step.  (note: this is not actually from one of
-the test images)
 
-![alt text][image3]
+I used a combination of color and gradient thresholds to generate a binary
+image. The implementation is contained in the file `color_grad.py` and has the
+following steps:
+  - thresholding the abs value of Sobel derivative operator in x direction
+  - thresholding the quadratic norm of Sobel derivative operator
+  - thresholding the direction of two-dimensional Sobel derivative operator
+  - thresholding the red color and saturation (from HSL model)
+
+These steps are showcased in the below illustration.
+![alt text][image_thresh]
 
 ####3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 

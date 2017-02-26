@@ -1,7 +1,13 @@
-import numpy as np
+"""
+Detecting the lane lines in the input image via thresholding
+color spaces and functions of Sobel derivative operator.
+"""
 import cv2
+import ipdb
 import matplotlib.pyplot as plt
+import numpy as np
 
+from undistort import undistort_factory
 from utils import show_transformation_on_test_images
 
 
@@ -148,11 +154,78 @@ def showcase_combined_thresholding():
     show_transformation_on_test_images(f, 'pipeline')
 
 
+
+def writeup_visualisation_car():
+    undst_f = undistort_factory()
+
+    sobel = lambda img: 255 * sobel_norm_thresh(img, norm='x_abs', 
+                              kernel_size=SETTINGS['kernel_size'], 
+                              t_min=SETTINGS['x_abs'][0], 
+                              t_max=SETTINGS['x_abs'][1])
+
+
+    quad = lambda img: 255 * sobel_norm_thresh(img, norm='quadratic',
+                                  kernel_size=SETTINGS['kernel_size'], 
+                                  t_min=SETTINGS['quad'][0], 
+                                  t_max=SETTINGS['quad'][1])
+
+
+    dir_masking = lambda img: 255 *  grad_dir_threshold(img, 
+                                  kernel_size=SETTINGS['kernel_size'], 
+                                  t_min=SETTINGS['dir'][0], 
+                                  t_max=SETTINGS['dir'][1])
+
+    hls = lambda img: 255 * hls_threshold(img, t_min=SETTINGS['s'][0],
+                                         t_max=SETTINGS['s'][1])
+
+    red = lambda img: 255 * red_threshold(img, t_min=SETTINGS['red'][0],
+                                         t_max=SETTINGS['red'][1])
+
+    comb = lambda img: 255 * combined_thresholding(img)
+
+    img_fname = 'img/test2.jpg'
+    img = cv2.imread(img_fname)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img = undst_f(img)
+    
+    f, axes = plt.subplots(3, 2, figsize=(16, 2 * 8))
+    f.tight_layout()
+
+    red_n_hls = np.dstack((red(img), np.zeros_like(img[:,:,1]), hls(img)))
+
+    pics = [
+        (img, "Input image"),
+        (sobel(img), "Abs of Sobel derivative in x direction threshold"),
+        (quad(img), "Quadratic norm of Sobel derivatives threshold"),
+        (dir_masking(img), "Direction of Sobel derivative threshold"),
+        (red_n_hls, "Red and S (of HLS) threshold"),
+        (comb(img), "Whole thresholding pipeline"),
+    ]
+
+    idx = 0
+    for elem in axes:
+        for ax in elem:
+            im, title = pics[idx]
+            if idx not in [0, 4]:
+                ax.imshow(im, cmap='gray')
+            else:
+                ax.imshow(im)
+            idx += 1
+            ax.set_title(title)
+
+    # plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
+    f.savefig('out/thresholding.jpg')
+    # plt.savefig('out/thresholding.jpg')
+    plt.close()
+
+
 if __name__ == '__main__':
     # showcase_sobel_norm_thresholding()
     # showcase_quadratic_norm_thresholding()
     # showcase_directional_thresholding()
     # showcase_hls_thresholding()
     # showcase_red_channel_thresholding()
-    showcase_combined_thresholding()
+    # showcase_combined_thresholding()
+
+    writeup_visualisation_car()
     print "Works like a charm!!"
