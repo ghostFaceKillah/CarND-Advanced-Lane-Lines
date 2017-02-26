@@ -38,6 +38,7 @@ def find_starting_points(img, visualize=False):
     leftx_base = np.argmax(histogram[:midpoint])
     rightx_base = np.argmax(histogram[midpoint:]) + midpoint
     if visualize:
+        import seaborn
         plt.plot(histogram)
         plt.title("Histogram of the pixel values in the lower half of input")
         plt.savefig('out/hist.jpg')
@@ -291,5 +292,5 @@ def writeup_visualization():
 
 
 if __name__  == '__main__':
-    # show_line_finding()
-    writeup_visualization()
+    show_line_finding()
+    # writeup_visualization()

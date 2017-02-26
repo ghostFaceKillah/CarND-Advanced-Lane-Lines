@@ -39,18 +39,6 @@ class Processor(object):
         return out
 
 
-def make_processor():
-    undst = undistort_factory()
-    warp, unwarp = make_warpers()
-
-    def process(img):
-        binary_warped = warp(combined_thresholding(undst(img)))
-        left_fit, right_fit = find_lane(binary_warped)
-        return draw_fit_on_original(img, left_fit, right_fit)
-
-    return process
-
-
 def main():
     parser = argparse.ArgumentParser(description="Find Lane Lines on a video")
     parser.add_argument('--in_video', type=str, help='input video', required=True)

@@ -19,10 +19,9 @@ The goals / steps of this project are the following:
 [image_thresh]: ./img/writeup/thresholding.jpg "Thresholding pipeline"
 [image_perspective]: ./img/writeup/warping.jpg "Perspective warping"
 [image_hist]: ./img/writeup/hist.jpg "Histogram of lower part of binary mask"
-[image_lane_finding]: ./img/writeup/lane_finding.jpg "Visualization of the lane line finding algorthitm"
 
-[image6]: ./examples/example_output.jpg "Output"
-[video1]: ./project_video.mp4 "Video"
+[image_lane_finding]: ./img/writeup/lane_finding.jpg "Visualization of the lane line finding algorthitm"
+[image_full]: ./img/writeup/full_output.jpg "Full pipeline effect"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -109,20 +108,39 @@ below image.
 
 ####4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
+The whole file `finding_lines.py` is dedicated to identifying lane-line pixels.
+
+The flow of finding a good starting line fit is as follows
+  1. finding a good starting point by computing a histogram of the lower half of the 
+    binary input iamge. Identify the two peaks of it and treat them as starting x values.
 ![alt text][image_hist]
+  2. moving up the image, put a box around the starting xs. Mark the 1 pixels in the box as hot.
+  3. recenter the box around the hot pixels (if there is enough of them)
+  4. if there is still place up the image, jump to pt 2 above
+
+At the end of the above iteration take all of the hot pixels and fit 2nd degree
+polynomial line to them.
+
+The full action of the algorithm on a sample image is shown below.
 
 ![alt text][image_lane_finding]
+
+To make the predictions more stable I use the fact that lane lines move smoothly in time
+in the observed image. Therefore I expotentially smooth my detections over time. This
+is implemented in file `process_video.py` in lines 20-23.
 
 
 ####5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in lines # through # in my code in `my_other_file.py`
+TODO
 
 ####6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
+I have prepared a function that based on the final left and right lane-line fit 
+draws the lane on the (undistorted) input image. This function can be seen in file
+`finding_lines.py` in lines 228 - 252.
 
-![alt text][image6]
+![alt text][image_full]
 
 ---
 
@@ -130,7 +148,7 @@ I implemented this step in lines # through # in my code in `yet_another_file.py`
 
 ####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](./out/project_out.mp4)
 
 ---
 
@@ -138,5 +156,7 @@ Here's a [link to my video result](./project_video.mp4)
 
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+Here I'll talk about the approach I took, what techniques I used, what worked
+and why, where the pipeline might fail and how I might improve it if I were
+going to pursue this project further.  
 
