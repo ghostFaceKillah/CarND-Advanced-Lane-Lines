@@ -1,3 +1,7 @@
+"""
+Dealing with camera distortion and calibration.
+"""
+
 import cv2
 import glob
 import matplotlib.pyplot as plt
@@ -98,7 +102,28 @@ def show_distortion_on_test_images():
     show_transformation_on_test_images(undist, 'undist')
 
 
+def writeup_visualisation():
+    undst_f = undistort_factory()
+
+    img_fname = 'camera_cal/calibration3.jpg'
+    img = cv2.imread(img_fname)
+    undist = undst_f(img)
+    
+    f, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
+    f.tight_layout()
+    ax1.set_title('One of calibration images') # , fontsize=10)
+    ax1.imshow(img)
+    
+    ax2.set_title('Distortion corrected calibration image')
+    ax2.imshow(undist) # , cmap='gray')
+
+    plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
+    plt.savefig('out/calibration_checkerboard.jpg')
+    plt.close()
+
+
 if __name__ == '__main__':
     # easy_undistortion_params()
     # show_undistortion_on_checkboard_images()
-    show_distortion_on_test_images()
+    # show_distortion_on_test_images()
+    writeup_visualisation()

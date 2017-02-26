@@ -105,36 +105,6 @@ def combined_thresholding(img, settings=SETTINGS):
     return combined
 
 
-def older_visualization_code():
-    # TODO: remove
-    # Stack each channel to view their individual contributions in green and blue respectively
-    # This returns a stack of the two binary images, whose components you can see as different colors
-    color_binary = np.dstack((np.zeros_like(sxbinary), sxbinary, s_binary))
-    
-    # Combine the two binary thresholds
-    combined_binary = np.zeros_like(sxbinary)
-    combined_binary[(s_binary == 1) | (sxbinary == 1)] = 1
-    
-    # Plotting thresholded images
-    f, (ax1, ax2) = plt.subplots(1, 2, figsize=(20,10))
-    ax1.set_title('Stacked thresholds')
-    ax1.imshow(color_binary)
-    
-    ax2.set_title('Combined S channel and gradient thresholds')
-    ax2.imshow(combined_binary, cmap='gray')
-
-    # Plot the result
-    f, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 9))
-    f.tight_layout()
-    
-    ax1.imshow(image)
-    ax1.set_title('Original Image', fontsize=40)
-    
-    ax2.imshow(result)
-    ax2.set_title('Pipeline Result', fontsize=40)
-    plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
-
-
 def showcase_sobel_norm_thresholding():
     f = lambda img: 255 * sobel_norm_thresh(img, norm='x_abs', 
                               kernel_size=SETTINGS['kernel_size'], 
