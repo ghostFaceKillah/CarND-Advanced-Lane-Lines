@@ -18,8 +18,9 @@ The goals / steps of this project are the following:
 [image_car_undist]: ./img/writeup/calibration_car.jpg "Undistorted car capture image"
 [image_thresh]: ./img/writeup/thresholding.jpg "Thresholding pipeline"
 [image_perspective]: ./img/writeup/warping.jpg "Perspective warping"
+[image_hist]: ./img/writeup/hist.jpg "Histogram of lower part of binary mask"
+[image_lane_finding]: ./img/writeup/lane_finding.jpg "Visualization of the lane line finding algorthitm"
 
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
 [image6]: ./examples/example_output.jpg "Output"
 [video1]: ./project_video.mp4 "Video"
 
@@ -108,9 +109,10 @@ below image.
 
 ####4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+![alt text][image_hist]
 
-![alt text][image5]
+![alt text][image_lane_finding]
+
 
 ####5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 

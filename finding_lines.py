@@ -32,11 +32,16 @@ def find_peaks_alt(img):
     return leftx_base, rightx_base
 
 
-def find_starting_points(img):
+def find_starting_points(img, visualize=False):
     histogram = np.sum(img[img.shape[0]/2:,:], axis=0)
     midpoint = np.int(histogram.shape[0]/2)
     leftx_base = np.argmax(histogram[:midpoint])
     rightx_base = np.argmax(histogram[midpoint:]) + midpoint
+    if visualize:
+        plt.plot(histogram)
+        plt.title("Histogram of the pixel values in the lower half of input")
+        plt.savefig('out/hist.jpg')
+        plt.close()
     return leftx_base, rightx_base
 
 
@@ -49,8 +54,8 @@ def find_lane(binary_warped, nwindows=9, visualize=False):
     # Find the peak of the left and right halves of the histogram
     # These will be the starting point for the left and right lines
 
-    # leftx_base, rightx_base = find_starting_points(binary_warped)
-    leftx_base, rightx_base = find_peaks_alt(binary_warped)
+    leftx_base, rightx_base = find_starting_points(binary_warped, visualize)
+    # leftx_base, rightx_base = find_peaks_alt(binary_warped)
 
     if visualize:
         out_img = np.dstack((binary_warped, binary_warped, binary_warped)) * 255
@@ -67,7 +72,7 @@ def find_lane(binary_warped, nwindows=9, visualize=False):
     rightx_current = rightx_base
 
     # Set the width of the windows +/- margin
-    margin = 100
+    margin = 70
 
     # Set minimum number of pixels found to recenter window
     minpix = 50
@@ -133,7 +138,8 @@ def find_lane(binary_warped, nwindows=9, visualize=False):
         plt.plot(right_fitx, ploty, color='yellow')
         plt.xlim(0, 1280)
         plt.ylim(720, 0)
-        plt.show()
+        plt.title('Lane line pixel finding & line fitting visualization')
+        plt.savefig('out/lane_finding.jpg')
 
     return left_fit, right_fit
 
@@ -273,5 +279,17 @@ def show_line_finding():
     show_transformation_on_test_images(process, "lane finding")
 
 
+def writeup_visualization():
+    undst = undistort_factory()
+    warp, unwarp = make_warpers()
+    fname = 'img/test3.jpg'
+
+    img = cv2.imread(fname)
+    binary_warped = warp(combined_thresholding(undst(img)))
+
+    find_lane(binary_warped, visualize=True)
+
+
 if __name__  == '__main__':
-    show_line_finding()
+    # show_line_finding()
+    writeup_visualization()
