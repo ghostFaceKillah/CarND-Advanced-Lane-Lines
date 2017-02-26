@@ -102,7 +102,7 @@ def show_distortion_on_test_images():
     show_transformation_on_test_images(undist, 'undist')
 
 
-def writeup_visualisation():
+def writeup_visualisation_checkerboard():
     undst_f = undistort_factory()
 
     img_fname = 'camera_cal/calibration3.jpg'
@@ -122,8 +122,30 @@ def writeup_visualisation():
     plt.close()
 
 
+def writeup_visualisation_car():
+    undst_f = undistort_factory()
+
+    img_fname = 'img/test1.jpg'
+    img = cv2.imread(img_fname)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    undist = undst_f(img)
+    
+    f, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
+    f.tight_layout()
+    ax1.set_title('Sample test image')
+    ax1.imshow(img)
+    
+    ax2.set_title('Distortion corrected test image')
+    ax2.imshow(undist)
+
+    plt.subplots_adjust(left=0., right=1, top=0.9, bottom=0.)
+    plt.savefig('out/calibration_car.jpg')
+    plt.close()
+
+
 if __name__ == '__main__':
-    # easy_undistortion_params()
     # show_undistortion_on_checkboard_images()
     # show_distortion_on_test_images()
-    writeup_visualisation()
+
+    # writeup_visualisation_checkerboard()
+    writeup_visualisation_car()

@@ -15,7 +15,8 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image_undist]: ./img/writeup/calibration_checkerboard.jpg "Undistorted checkerboard"
-[image2]: ./test_images/test1.jpg "Road Transformed"
+[image_car_undist]: .img/writeup/calibration_car.jpg "Undistorted car capture image"
+
 [image3]: ./examples/binary_combo_example.jpg "Binary Example"
 [image4]: ./examples/warped_straight_lines.jpg "Warp Example"
 [image5]: ./examples/color_fit_lines.jpg "Fit Visual"
@@ -58,16 +59,21 @@ The `cv2.undistort()` distortion correction functionality is wrapped into
 `undistort_factory` function that loads saved undistortion parameters and
 returns the final undistorting function.  Application of this function to one
 of the supplied checkerboard calibration images can be seen below:
-
 ![alt text][image_undist]
 
 ###Pipeline (single images)
 
 ####1. Provide an example of a distortion-corrected image.
-To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
-![alt text][image2]
+Applying the above described undistortion produced by `undistort_factory` from 
+`undistort.py`, yields the result visible below. The effect arguably is subtle, but important.
+![alt text][image_car_undist]
+
 ####2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
+
+I used a combination of color and gradient thresholds to generate a binary
+image (thresholding steps at lines # through # in `another_file.py`).  Here's
+an example of my output for this step.  (note: this is not actually from one of
+the test images)
 
 ![alt text][image3]
 
