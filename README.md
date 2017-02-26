@@ -220,3 +220,6 @@ If I were to recommend where to go from here, I would to the following:
     by manually or semi-manually annotating the lane lines. Maybe manually 
     veryfying the accuracy of the annotation?
 
+### Acknowledgements
+Many parts of code in this project are either taken or heavily inspired by 
+Udacity Self-driving car Nanodegree materials.
