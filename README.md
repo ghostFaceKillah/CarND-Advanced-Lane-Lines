@@ -143,14 +143,17 @@ The calculations are implementation of
 They are pretty easy - the only tricky thing to do is to transform the units from
 the pixels to meters well. We can do it based on official US highway specifications.
 
-History of the radius of the curve can be seen below
+History of the radius of the curve (capped at 2000m - this are the straight
+road bits) can be seen below:
 ![alt text][image_curvature]
+
 The curvature seems to be bounded by 500 m, which is more or less in line with the
 [official US highway design manuals](http://onlinemanuals.txdot.gov/txdotmanuals/rdw/Table_2-3_m.pdf).
 
 
-History of the distance of car from the center is seen below.
+History of the distance of car from the center is seen below:
 ![alt text][image_dist_from_center]
+
 As the lane is approximately 3.7 m wide, we see a result that the car is
 staying mostly on the left side of the lane, which is in line with what we see
 in the video.
@@ -182,13 +185,13 @@ Here's a [link to my video result](./out/project_out.mp4)
 Feature engineering for computer vision is hard!  This is well known to anybody
 who was interested in computer vision in the pre-NN-revival era (pre-2012).
 Making features that work in many different visual conditions was the main
-challange of the project.  Even though task was made relatively easy for us -
-the videos are pretty consistent, taken during daytime with pretty bright and
-consistent lighting it still was somewhat tricky to come up with features that
-will work always with required level of precision.  Additionally, the features
-have non-trivial interactions. It is clear that by combining many features we
-get fuller information, but a priori it is not clear how to combine them.
-Especially that there is not ground truth (we have no dataset with
+challange of the project.  Even though the task was made relatively easy for us
+- the videos are pretty consistent, taken during daytime with pretty bright and
+  consistent lighting it still was somewhat tricky to come up with features
+that will work always with required level of precision.  Additionally, the
+features have non-trivial interactions. It is clear that by combining many
+features we get fuller information, but a priori it is not clear how to combine
+them.  Especially that there is not ground truth (we have no dataset with
 well-annotated lane-lines).  Thus, a pretty extensive search of the parameter
 space was required to come up with something that works OK.
 
@@ -196,8 +199,10 @@ space was required to come up with something that works OK.
 There are many, many ways in which the pipeline might fail:
   - snow on the road
   - driving in the night
+  - driving in the rainy weather
   - bumpy road, obscuring parts of lanes and breaking perspective transform
   - time-worn bleak lane lines
+  - curvy road
 
 
 These are all consequences of the fact that the predictor framework depends on 
@@ -205,6 +210,8 @@ many features that are tuned to the current lighting conditions and relatively
 straight lines.
 
 If I were to recommend where to go from here, I would to the following:
+  - fine tune or reimplement the stage of the project that takes binary mask
+    and gives back the polynomial fit. Tune it more to handle curvy roads.
   - implement a number of (10-20 more?) relatively uncorrelated feature 
     and combined features variations
   - based on the above features implement new lane annotators, working on
