@@ -1,0 +1,4 @@
+*.pyc
+.idea/*
+stuff.db
+out/*
